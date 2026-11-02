@@ -1,0 +1,103 @@
+import java.util.Scanner;
+
+class ArrayStack {
+    int arr[];
+    int top;
+    int maxLimit;
+
+    ArrayStack(int maxLimit) {
+        this.maxLimit = maxLimit;
+        arr = new int[maxLimit];
+        top = -1;
+    }
+
+    boolean isFull() {
+        return top == maxLimit - 1;
+    }
+
+    boolean isEmpty() {
+        return top == -1;
+    }
+
+    void push(int data) {
+        if (isFull()) {
+            System.out.println("Stack Overflow");
+        } else {
+            arr[++top] = data;
+            System.out.println(data + " inserted into stack.");
+        }
+    }
+
+    void pop() {
+        if (isEmpty()) {
+            System.out.println("Stack Underflow");
+        } else {
+            System.out.println("Deleted Element: " + arr[top--]);
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            System.out.println("Stack is Empty");
+        } else {
+            System.out.println("Stack Elements:");
+            for (int i = top; i >= 0; i--) {
+                System.out.println(arr[i]);
+            }
+        }
+    }
+}
+
+public class MainStack {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Stack Size: ");
+        int maxLimit = scanner.nextInt();
+
+        ArrayStack myStack = new ArrayStack(maxLimit);
+
+        while (true) {
+            System.out.println("\n1.Push");
+            System.out.println("2.Pop");
+            System.out.println("3.Display");
+            System.out.println("4.Check isEmpty");
+            System.out.println("5.Check isFull");
+            System.out.println("6.Exit");
+            System.out.print("Enter Choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Element: ");
+                    int data = scanner.nextInt();
+                    myStack.push(data);
+                    break;
+                case 2:
+                    myStack.pop();
+                    break;
+                case 3:
+                    myStack.display();
+                    break;
+                case 4:
+                    if (myStack.isEmpty()) {
+                        System.out.println("Stack is Empty");
+                    } else {
+                        System.out.println("Stack is NOT Empty");
+                    }
+                    break;
+                case 5:
+                    if (myStack.isFull()) {
+                        System.out.println("Stack is Full");
+                    } else {
+                        System.out.println("Stack is NOT Full");
+                    }
+                    break;
+                case 6:
+                    System.out.println("Program Ended");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice");
+            }
+        }
+    }
+}

@@ -1,0 +1,153 @@
+import java.util.Scanner;
+
+class QueueADT {
+    static final int SIZE = 5;
+    int[] queue = new int[SIZE];
+    int front = -1, rear = -1;
+
+    // Linear Queue Enqueue
+    void linearEnqueue(int data) {
+        if (rear == SIZE - 1) {
+            System.out.println("Linear Queue Overflow");
+        } else {
+            if (front == -1)
+                front = 0;
+            queue[++rear] = data;
+            System.out.println(data + " inserted.");
+        }
+    }
+
+    // Linear Queue Dequeue
+    void linearDequeue() {
+        if (front == -1 || front > rear) {
+            System.out.println("Linear Queue Underflow");
+        } else {
+            System.out.println("Deleted: " + queue[front++]);
+        }
+    }
+
+    // Linear Queue Display
+    void linearDisplay() {
+        if (front == -1 || front > rear) {
+            System.out.println("Queue is Empty");
+        } else {
+            System.out.print("Linear Queue: ");
+            for (int i = front; i <= rear; i++)
+                System.out.print(queue[i] + " ");
+            System.out.println();
+        }
+    }
+}
+
+class CircularQueue {
+    static final int SIZE = 5;
+    int[] queue = new int[SIZE];
+    int front = -1, rear = -1;
+
+    // Circular Queue Enqueue
+    void enqueue(int data) {
+        if ((rear + 1) % SIZE == front) {
+            System.out.println("Circular Queue Overflow");
+        } else {
+            if (front == -1)
+                front = 0;
+            rear = (rear + 1) % SIZE;
+            queue[rear] = data;
+            System.out.println(data + " inserted.");
+        }
+    }
+
+    // Circular Queue Dequeue
+    void dequeue() {
+        if (front == -1) {
+            System.out.println("Circular Queue Underflow");
+        } else {
+            System.out.println("Deleted: " + queue[front]);
+
+            if (front == rear) {
+                front = rear = -1;
+            } else {
+                front = (front + 1) % SIZE;
+            }
+        }
+    }
+    // Circular Queue Display
+    void display() {
+        if (front == -1) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        System.out.print("Circular Queue: ");
+        int i = front;
+        while (true) {
+            System.out.print(queue[i] + " ");
+            if (i == rear)
+                break;
+            i = (i + 1) % SIZE;
+        }
+        System.out.println();
+    }
+}
+
+public class QueueDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        QueueADT linear = new QueueADT();
+        CircularQueue circular = new CircularQueue();
+
+        int choice, value;
+
+        do {
+            System.out.println("\n--- Queue ADT Menu ---");
+            System.out.println("1. Linear Enqueue");
+            System.out.println("2. Linear Dequeue");
+            System.out.println("3. Linear Display");
+            System.out.println("4. Circular Enqueue");
+            System.out.println("5. Circular Dequeue");
+            System.out.println("6. Circular Display");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter value: ");
+                    value = sc.nextInt();
+                    linear.linearEnqueue(value);
+                    break;
+
+                case 2:
+                    linear.linearDequeue();
+                    break;
+
+                case 3:
+                    linear.linearDisplay();
+                    break;
+
+                case 4:
+                    System.out.print("Enter value: ");
+                    value = sc.nextInt();
+                    circular.enqueue(value);
+                    break;
+
+                case 5:
+                    circular.dequeue();
+                    break;
+
+                case 6:
+                    circular.display();
+                    break;
+
+                case 7:
+                    System.out.println("Program Ended.");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice");
+            }
+        } while (choice != 7);
+
+        sc.close();
+    }
+}

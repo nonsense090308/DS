@@ -1,0 +1,197 @@
+import java.util.Scanner;
+
+class BSTNode {
+    int data;
+    BSTNode left, right;
+
+    public BSTNode(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    BSTNode root;
+
+    BinarySearchTree() {
+        root = null;
+    }
+
+    // Insert Operation
+    void insert(int data) {
+        root = insertRec(root, data);
+        System.out.println(data + " inserted into BST.");
+    }
+
+    private BSTNode insertRec(BSTNode root, int data) {
+        if (root == null) {
+            root = new BSTNode(data);
+            return root;
+        }
+
+        if (data < root.data) {
+            root.left = insertRec(root.left, data);
+        } else if (data > root.data) {
+            root.right = insertRec(root.right, data);
+        } else {
+            System.out.println("Duplicate values not allowed.");
+        }
+
+        return root;
+    }
+
+    // Search Operation
+    void search(int key) {
+        if (searchRec(root, key)) {
+            System.out.println(key + " found in BST.");
+        } else {
+            System.out.println(key + " not found in BST.");
+        }
+    }
+
+    private boolean searchRec(BSTNode root, int key) {
+        if (root == null) return false;
+        if (root.data == key) return true;
+
+        return key < root.data ? searchRec(root.left, key) : searchRec(root.right, key);
+    }
+
+    // Delete Operation
+    void delete(int key) {
+        if (searchRec(root, key)) {
+            root = deleteRec(root, key);
+            System.out.println(key + " deleted successfully.");
+        } else {
+            System.out.println(key + " not present in tree.");
+        }
+    }
+
+    private BSTNode deleteRec(BSTNode root, int key) {
+        if (root == null) return root;
+
+        if (key < root.data) {
+            root.left = deleteRec(root.left, key);
+        } else if (key > root.data) {
+            root.right = deleteRec(root.right, key);
+        } else {
+            // Node with 0 or 1 child
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+
+            // Node with 2 children: Find Inorder Successor
+            root.data = minValue(root.right);
+            root.right = deleteRec(root.right, root.data);
+        }
+
+        return root;
+    }
+
+    private int minValue(BSTNode root) {
+        int minv = root.data;
+        while (root.left != null) {
+            minv = root.left.data;
+            root = root.left;
+        }
+        return minv;
+    }
+
+    // Inorder Traversal (Left -> Root -> Right)
+    void inorder() {
+        System.out.print("Inorder: ");
+        inorderRec(root);
+        System.out.println();
+    }
+
+    private void inorderRec(BSTNode root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.print(root.data + " ");
+            inorderRec(root.right);
+        }
+    }
+
+    // Preorder Traversal (Root -> Left -> Right)
+    void preorder() {
+        System.out.print("Preorder: ");
+        preorderRec(root);
+        System.out.println();
+    }
+
+    private void preorderRec(BSTNode root) {
+        if (root != null) {
+            System.out.print(root.data + " ");
+            preorderRec(root.left);
+            preorderRec(root.right);
+        }
+    }
+
+    // Postorder Traversal (Left -> Right -> Root)
+    void postorder() {
+        System.out.print("Postorder: ");
+        postorderRec(root);
+        System.out.println();
+    }
+
+    private void postorderRec(BSTNode root) {
+        if (root != null) {
+            postorderRec(root.left);
+            postorderRec(root.right);
+            System.out.print(root.data + " ");
+        }
+    }
+}
+
+public class BSTImplementation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BinarySearchTree bst = new BinarySearchTree();
+        int choice, value;
+
+        do {
+            System.out.println("\n------ BINARY SEARCH TREE MENU ------");
+            System.out.println("1. Insert Node");
+            System.out.println("2. Search Node");
+            System.out.println("3. Delete Node");
+            System.out.println("4. Inorder Traversal");
+            System.out.println("5. Preorder Traversal");
+            System.out.println("6. Postorder Traversal");
+            System.out.println("7. Exit");
+            System.out.print("Enter Choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Value to Insert: ");
+                    value = sc.nextInt();
+                    bst.insert(value);
+                    break;
+                case 2:
+                    System.out.print("Enter Value to Search: ");
+                    value = sc.nextInt();
+                    bst.search(value);
+                    break;
+                case 3:
+                    System.out.print("Enter Value to Delete: ");
+                    value = sc.nextInt();
+                    bst.delete(value);
+                    break;
+                case 4:
+                    bst.inorder();
+                    break;
+                case 5:
+                    bst.preorder();
+                    break;
+                case 6:
+                    bst.postorder();
+                    break;
+                case 7:
+                    System.out.println("Program Terminated.");
+                    break;
+                default:
+                    System.out.println("Invalid Choice. Try again.");
+            }
+        } while (choice != 7);
+
+        sc.close();
+    }
+}

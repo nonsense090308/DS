@@ -1,0 +1,136 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Scanner;
+
+// Adjacency Matrix Implementation
+class GraphMatrix {
+    private int numVertices;
+    private int[][] adjMatrix;
+
+    public GraphMatrix(int numVertices) {
+        this.numVertices = numVertices;
+        adjMatrix = new int[numVertices][numVertices];
+    }
+
+    public void addEdge(int source, int destination) {
+        adjMatrix[source][destination] = 1;
+        adjMatrix[destination][source] = 1; // Undirected Graph
+    }
+
+    public void bfs(int startVertex) {
+        boolean[] visited = new boolean[numVertices];
+        Queue<Integer> queue = new LinkedList<>();
+
+        visited[startVertex] = true;
+        queue.add(startVertex);
+
+        System.out.print("BFS Traversal (Adjacency Matrix): ");
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            System.out.print(current + " ");
+
+            for (int i = 0; i < numVertices; i++) {
+                if (adjMatrix[current][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    queue.add(i);
+                }
+            }
+        }
+        System.out.println();
+    }
+}
+
+// Adjacency List Implementation
+class GraphList {
+    private int numVertices;
+    private List<List<Integer>> adjList;
+
+    public GraphList(int numVertices) {
+        this.numVertices = numVertices;
+        adjList = new ArrayList<>();
+        for (int i = 0; i < numVertices; i++) {
+            adjList.add(new ArrayList<>());
+        }
+    }
+
+    public void addEdge(int source, int destination) {
+        adjList.get(source).add(destination);
+        adjList.get(destination).add(source); // Undirected Graph
+    }
+
+    public void bfs(int startVertex) {
+        boolean[] visited = new boolean[numVertices];
+        Queue<Integer> queue = new LinkedList<>();
+
+        visited[startVertex] = true;
+        queue.add(startVertex);
+
+        System.out.print("BFS Traversal (Adjacency List): ");
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            System.out.print(current + " ");
+
+            for (int neighbor : adjList.get(current)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+        System.out.println();
+    }
+}
+
+public class BFSImplementation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.util.length > 0 ? "" : ""); // Scanner setup
+        sc = new Scanner(System.in);
+
+        System.out.print("Enter number of vertices: ");
+        int vertices = sc.nextInt();
+
+        GraphMatrix gMatrix = new GraphMatrix(vertices);
+        GraphList gList = new GraphList(vertices);
+
+        int choice;
+        do {
+            System.out.println("\n------ GRAPH BFS MENU ------");
+            System.out.println("1. Add Edge");
+            System.out.println("2. Perform BFS Traversal (Adjacency Matrix)");
+            System.out.println("3. Perform BFS Traversal (Adjacency List)");
+            System.out.println("4. Exit");
+            System.out.print("Enter Choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Source and Destination (0-indexed): ");
+                    int src = sc.nextInt();
+                    int dest = sc.nextInt();
+                    gMatrix.addEdge(src, dest);
+                    gList.addEdge(src, dest);
+                    System.out.println("Edge added between " + src + " and " + dest);
+                    break;
+                case 2:
+                    System.out.print("Enter Start Vertex: ");
+                    int startM = sc.nextInt();
+                    gMatrix.bfs(startM);
+                    break;
+                case 3:
+                    System.out.print("Enter Start Vertex: ");
+                    int startL = sc.nextInt();
+                    gList.bfs(startL);
+                    break;
+                case 4:
+                    System.out.println("Program Terminated.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 4);
+
+        sc.close();
+    }
+}

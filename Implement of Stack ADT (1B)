@@ -1,0 +1,87 @@
+import java.util.Scanner;
+class ElementNode {
+    int val;
+    ElementNode next;
+    ElementNode(int val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+class LinkedStack {
+    ElementNode head = null;
+    boolean isEmpty() {
+        return head == null;
+    }
+
+    void push(int item) {
+        ElementNode newNode = new ElementNode(item);
+        newNode.next = head;
+        head = newNode;
+        System.out.println(item + " inserted into stack.");
+    }
+    void pop() {
+        if (isEmpty()) {
+            System.out.println("Stack Underflow");
+            return;
+        }
+        System.out.println("Deleted Element: " + head.val);
+        head = head.next;
+    }
+    void display() {
+        if (isEmpty()) {
+            System.out.println("Stack is Empty");
+            return;
+        }
+        ElementNode current = head;
+        System.out.println("Stack Elements:");
+        while (current != null) {
+            System.out.println(current.val);
+            current = current.next;
+        }
+    }
+}
+
+public class MainLinkedStack {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        LinkedStack myStack = new LinkedStack();
+
+        while (true) {
+            System.out.println("\n1.Push");
+            System.out.println("2.Pop");
+            System.out.println("3.Display");
+            System.out.println("4.Check isEmpty");
+            System.out.println("5.Exit");
+            System.out.print("Enter Choice: ");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Element: ");
+                    int item = scanner.nextInt();
+                    myStack.push(item);
+                    break;
+                case 2:
+                    myStack.pop();
+                    break;
+                case 3:
+                    myStack.display();
+                    break;
+                case 4:
+                    if (myStack.isEmpty()) {
+                        System.out.println("Stack is Empty");
+                    } else {
+                        System.out.println("Stack is NOT Empty");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Program Ended");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice");
+            }
+        }
+    }
+}
