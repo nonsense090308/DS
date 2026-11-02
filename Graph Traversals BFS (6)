@@ -85,7 +85,7 @@ class GraphList {
 
 public class BFSImplementation {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.util.length > 0 ? "" : ""); // Scanner setup
+        Scanner sc = new Scanner(System.in); // Scanner setup
         sc = new Scanner(System.in);
 
         System.out.print("Enter number of vertices: ");
